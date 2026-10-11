@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kavárna Mlýnek</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: one narrow phone column, like a card you hold in your hand after tapping the stand */
+:root {
+  --bg: #e9ede4;
+  --paper: #f7f8f3;
+  --ink: #1f2a22;
+  --muted: #5d6a5f;
+  --line: #cfd6c8;
+  --accent: #2f5d46;
+  --accent-ink: #f4f7f1;
+  --bean: #c9922e;
+  --open: #2e7d4f;
+  --closed: #a5432f;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141a16; --paper: #1c241f; --ink: #e7ece4; --muted: #9eab9f; --line: #2e3a32;
+    --accent: #7fb898; --accent-ink: #10180f; --bean: #e0b25a; --open: #6cc591; --closed: #e58a72;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141a16; --paper: #1c241f; --ink: #e7ece4; --muted: #9eab9f; --line: #2e3a32;
+  --accent: #7fb898; --accent-ink: #10180f; --bean: #e0b25a; --open: #6cc591; --closed: #e58a72;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.5;
+  padding: 24px 16px 40px;
+}
+.sample {
+  max-width: 440px; margin: 0 auto 14px; text-align: center; font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+.card {
+  max-width: 440px; margin: 0 auto; background: var(--paper); border: 1px solid var(--line);
+  border-radius: 22px; padding: 28px 20px 22px; display: flex; flex-direction: column; gap: 22px;
+}
+header { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.logo {
+  width: 76px; height: 76px; border-radius: 50%; background: var(--accent); display: grid; place-items: center;
+}
+.logo svg { width: 40px; height: 40px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 1.9rem; line-height: 1.1; margin: 4px 0 0; text-wrap: balance; }
+.tagline { margin: 0; color: var(--muted); font-size: .95rem; }
+.status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: .88rem; font-weight: 500;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid var(--line);
+}
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--open); }
+.status.closed .dot { background: var(--closed); }
+
+.review {
+  display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: var(--accent-ink);
+  background: var(--accent); border-radius: 16px; padding: 18px 18px 16px; text-align: center;
+}
+.stars { display: flex; justify-content: center; gap: 6px; padding: 4px 0; touch-action: none; }
+.star { width: 32px; height: 32px; display: block; }
+.star svg { width: 100%; height: 100%; fill: transparent; stroke: var(--bean); stroke-width: 1.6; stroke-linejoin: round; transition: fill .15s, transform .15s; }
+.star.on svg { fill: var(--bean); transform: scale(1.12); }
+@media (prefers-reduced-motion: reduce) { .star svg { transition: none; } .star.on svg { transform: none; } }
+.review strong { font-family: var(--display); font-size: 1.25rem; font-weight: 500; }
+.review span { font-size: .88rem; opacity: .85; }
+.review:focus-visible, .link:focus-visible, .copy:focus-visible { outline: 3px solid var(--bean); outline-offset: 3px; }
+
+.links { display: flex; flex-direction: column; gap: 10px; }
+.link {
+  display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 14px;
+  border: 1px solid var(--line); color: var(--ink); text-decoration: none; font-weight: 500;
+  transition: border-color .15s, transform .15s;
+}
+.link:hover { border-color: var(--accent); transform: translateY(-1px); }
+.link svg { width: 22px; height: 22px; flex: none; stroke: var(--accent); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.link .txt { display: flex; flex-direction: column; min-width: 0; }
+.link small { color: var(--muted); font-weight: 400; font-size: .82rem; }
+.link .arrow { margin-left: auto; color: var(--muted); }
+
+.wifi {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 14px;
+  background: var(--bg); flex-wrap: wrap;
+}
+.wifi .txt { flex: 1; min-width: 0; }
+.label { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wifi code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 1rem; word-break: break-all; }
+.copy {
+  font: inherit; font-size: .88rem; font-weight: 600; border: 1px solid var(--accent); color: var(--accent);
+  background: transparent; border-radius: 999px; padding: 7px 14px; cursor: pointer;
+}
+.copy:hover { background: var(--accent); color: var(--accent-ink); }
+
+.hours { border-top: 1px solid var(--line); padding-top: 16px; }
+.hours table { width: 100%; border-collapse: collapse; font-size: .92rem; font-variant-numeric: tabular-nums; }
+.hours td { padding: 3px 0; }
+.hours td:last-child { text-align: right; color: var(--muted); }
+.hours tr.today td { font-weight: 600; color: var(--ink); }
+.contact { font-size: .92rem; color: var(--muted); text-align: center; }
+.contact b { color: var(--ink); font-weight: 600; user-select: all; }
+footer { max-width: 440px; margin: 16px auto 0; text-align: center; font-size: .78rem; color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { .link { transition: none; } .link:hover { transform: none; } }
+</style>
+</head>
+<body>
+
+<p class="sample">Ukázka · vymyšlená kavárna</p>
+
+<main class="card">
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 40 40"><ellipse cx="20" cy="20" rx="11" ry="15" transform="rotate(30 20 20)" fill="var(--bean)"/><path d="M14 9c6 6 6 16 12 22" stroke="var(--accent)" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    <h1>Kavárna Mlýnek</h1>
+    <p class="tagline">Výběrová káva a domácí dorty · Vinohrady</p>
+    <div class="status" id="status"><span class="dot"></span><span id="statusText">Dnes otevřeno do 19:00</span></div>
+  </header>
+
+  <a class="review" href="https://www.google.com/maps" target="_blank" rel="noopener">
+    <div class="stars" id="stars" aria-hidden="true"></div>
+    <strong>Chutnalo vám? Napište nám recenzi</strong>
+    <span>Zabere to minutu a moc nám pomůžete</span>
+  </a>
+
+  <nav class="links" aria-label="Odkazy">
+    <a class="link" href="https://www.instagram.com/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/></svg>
+      <span class="txt">Instagram<small>Nové dorty každé ráno</small></span><span class="arrow">›</span>
+    </a>
+    <a class="link" href="https://www.facebook.com/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>
+      <span class="txt">Facebook<small>Akce a degustace</small></span><span class="arrow">›</span>
+    </a>
+    <a class="link" href="#menu">
+      <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+      <span class="txt">Nápojový lístek<small>Espresso od 55 Kč, filtr od 75 Kč</small></span><span class="arrow">›</span>
+    </a>
+    <a class="link" href="https://www.google.com/maps" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <span class="txt">Jak k nám<small>Slezská 48, Praha 2</small></span><span class="arrow">›</span>
+    </a>
+  </nav>
+
+  <div class="wifi">
+    <div class="txt">
+      <div class="label">Wi-Fi · Mlynek_host</div>
+      <code id="wifiPass">kafeskolacem</code>
+    </div>
+    <button class="copy" id="copyBtn" type="button">Kopírovat heslo</button>
+  </div>
+
+  <section class="hours" id="menu" aria-label="Otevírací doba">
+    <div class="label" style="margin-bottom:6px">Otevírací doba</div>
+    <table id="hours"></table>
+  </section>
+
+  <p class="contact">Rezervace stolu: <b>+420 777 123 456</b></p>
+</main>
+
+<footer>Rozcestník připravil: Tvoje značka</footer>
+
+<script>
+const days = [
+  ["Pondělí", 8, 19], ["Úterý", 8, 19], ["Středa", 8, 19], ["Čtvrtek", 8, 19],
+  ["Pátek", 8, 21], ["Sobota", 9, 21], ["Neděle", 9, 17]
+];
+const now = new Date();
+const idx = (now.getDay() + 6) % 7;
+const tbl = document.getElementById("hours");
+days.forEach((d, i) => {
+  const tr = document.createElement("tr");
+  if (i === idx) tr.className = "today";
+  tr.innerHTML = `<td>${d[0]}</td><td>${d[1]}:00 – ${d[2]}:00</td>`;
+  tbl.appendChild(tr);
+});
+const [, open, close] = days[idx];
+const h = now.getHours() + now.getMinutes() / 60;
+const st = document.getElementById("status"), txt = document.getElementById("statusText");
+if (h >= open && h < close) { txt.textContent = `Teď otevřeno do ${close}:00`; }
+else if (h < open) { st.classList.add("closed"); txt.textContent = `Otevíráme dnes v ${open}:00`; }
+else { st.classList.add("closed"); const n = days[(idx + 1) % 7]; txt.textContent = `Zavřeno · zítra od ${n[1]}:00`; }
+
+const starBox = document.getElementById("stars");
+const starPath = '<svg viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z"/></svg>';
+for (let i = 0; i < 5; i++) { const s = document.createElement("span"); s.className = "star"; s.innerHTML = starPath; starBox.appendChild(s); }
+const starEls = [...starBox.children];
+const fill = n => starEls.forEach((s, i) => s.classList.toggle("on", i < n));
+const fromPointer = e => {
+  const r = starBox.getBoundingClientRect();
+  const first = starEls[0].getBoundingClientRect().left, last = starEls[4].getBoundingClientRect().right;
+  const x = Math.min(Math.max(e.clientX, first), last - 1);
+  fill(Math.floor((x - first) / ((last - first) / 5)) + 1);
+};
+starBox.addEventListener("pointermove", fromPointer);
+starBox.addEventListener("pointerdown", fromPointer);
+starBox.addEventListener("pointerleave", () => fill(0));
+starBox.addEventListener("pointercancel", () => fill(0));
+
+const btn = document.getElementById("copyBtn");
+btn.addEventListener("click", () => {
+  const pass = document.getElementById("wifiPass");
+  const done = () => { btn.textContent = "Zkopírováno"; setTimeout(() => btn.textContent = "Kopírovat heslo", 1800); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(pass); const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Označeno, zkopíruj"; };
+  if (navigator.clipboard) navigator.clipboard.writeText(pass.textContent).then(done, fallback); else fallback();
+});
+</script>
+</body>
+</html>
